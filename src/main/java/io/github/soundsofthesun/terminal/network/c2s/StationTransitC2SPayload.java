@@ -45,8 +45,8 @@ public record StationTransitC2SPayload(BlockPos src, BlockPos dest) implements C
                     path.validRails.add(payload.dest());
                     player.setAttached(TAttachmentTypes.TRANSIT_ATTACHMENT_TYPE, new TransitAttachedData(new ArrayList<>(path.validRails)));
                     BlockPos current = vehicle.getBlockPos();
-                    if (!(path.validRails.size() < 3)) {
-                        BlockPos testPos = path.validRails.get(2);
+                    if (!(path.validRails.size() < 4)) {
+                        BlockPos testPos = path.validRails.get(3);
                         int dx = testPos.getX()-current.getX();
                         int dz = testPos.getZ()-current.getZ();
                         vehicle.addVelocity(dx*5, 0, dz*5);
