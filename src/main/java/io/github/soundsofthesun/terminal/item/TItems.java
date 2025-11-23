@@ -27,18 +27,18 @@ public class TItems {
     }
 
     public static void initialize() {
-
         // Add to item groups
         ItemGroupEvents.modifyEntriesEvent(Terminal.TERMINAL_GROUP_KEY)
                 .register((itemGroup) -> {
                     itemGroup.add(TItems.TERMINAL_CONTROLLER);
                 });
+    }
 
+    public static void initializeClient() {
         // Tooltip translation keys
         ItemTooltipCallback.EVENT.register((itemStack, tooltipContext, tooltipType, list) -> {
             if (itemStack.isOf(TItems.TERMINAL_CONTROLLER)) list.add(Text.translatable("itemTooltip.terminal.terminal_controller"));
         });
-
     }
 
     public static final Item TERMINAL_CONTROLLER = register("terminal_controller", TerminalController::new, new Item.Settings()

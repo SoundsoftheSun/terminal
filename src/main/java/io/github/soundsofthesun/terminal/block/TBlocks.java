@@ -50,14 +50,15 @@ public class TBlocks {
             itemGroup.add(TBlocks.SWITCH_BLOCK.asItem());
             itemGroup.add(TBlocks.TERMINAL_BLOCK.asItem());
         });
+    }
 
+    public static void initializeClient() {
         // Tooltip translation keys
         ItemTooltipCallback.EVENT.register((itemStack, tooltipContext, tooltipType, list) -> {
             if (itemStack.isOf(TBlocks.TERMINAL_BLOCK.asItem())) list.add(Text.translatable("blockTooltip.terminal.terminal_block"));
             if (itemStack.isOf(TBlocks.STATION_BLOCK.asItem())) list.add(Text.translatable("blockTooltip.terminal.station_block"));
             if (itemStack.isOf(TBlocks.SWITCH_BLOCK.asItem())) list.add(Text.translatable("blockTooltip.terminal.switch_block"));
         });
-
     }
 
     public static final Block STATION_BLOCK = register(
