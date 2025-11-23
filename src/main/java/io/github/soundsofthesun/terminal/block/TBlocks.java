@@ -1,6 +1,7 @@
 package io.github.soundsofthesun.terminal.block;
 
 import io.github.soundsofthesun.terminal.Terminal;
+import io.github.soundsofthesun.terminal.block.conductorstation.ConductorStation;
 import io.github.soundsofthesun.terminal.block.station.StationBlock;
 import io.github.soundsofthesun.terminal.block.switchblock.SwitchBlock;
 import io.github.soundsofthesun.terminal.block.terminalblock.TerminalBlock;
@@ -48,6 +49,7 @@ public class TBlocks {
             itemGroup.accept(TBlocks.STATION_BLOCK.asItem());
             itemGroup.accept(TBlocks.SWITCH_BLOCK.asItem());
             itemGroup.accept(TBlocks.TERMINAL_BLOCK.asItem());
+            itemGroup.accept(TBlocks.CONDUCTOR_STATION_BLOCK.asItem());
         });
     }
 
@@ -57,6 +59,7 @@ public class TBlocks {
             if (itemStack.is(TBlocks.TERMINAL_BLOCK.asItem())) list.add(Component.translatable("blockTooltip.terminal.terminal_block"));
             if (itemStack.is(TBlocks.STATION_BLOCK.asItem())) list.add(Component.translatable("blockTooltip.terminal.station_block"));
             if (itemStack.is(TBlocks.SWITCH_BLOCK.asItem())) list.add(Component.translatable("blockTooltip.terminal.switch_block"));
+            if (itemStack.is(TBlocks.CONDUCTOR_STATION_BLOCK.asItem())) list.add(Component.translatable("blockTooltip.terminal.conductor_station_block"));
         });
     }
 
@@ -93,6 +96,17 @@ public class TBlocks {
                     .instrument(NoteBlockInstrument.BASEDRUM)
                     .lightLevel(state -> 15)
                     .strength(3.0F, 1200.0F),
+            true
+    );
+
+    public static final Block CONDUCTOR_STATION_BLOCK = register(
+            "conductor_station_block",
+            ConductorStation::new,
+            BlockBehaviour.Properties.of()
+                    .noOcclusion()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .instrument(NoteBlockInstrument.COW_BELL)
+                    .strength(3.0F, 5F),
             true
     );
 

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "terminal:block/conductor_station_block"
+    }
+  }
+}

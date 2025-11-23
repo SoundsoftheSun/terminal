@@ -31,5 +31,13 @@ public class TLangProviderEn extends FabricLanguageProvider {
 
         b.add("block.terminal.terminal_block", "Terminal Block");
         b.add("blockTooltip.terminal.terminal_block", "Creates a rail network.");
+
+        b.add("block.terminal.conductor_station_block", "Conductor Station");
+        b.add("blockTooltip.terminal.conductor_station_block", "Workstation for Conductor Villagers!");
+
+        // Villagers
+        b.add("profession.terminal.conductor", "Conductor");
+
+
     }
 }

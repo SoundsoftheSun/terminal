@@ -6,8 +6,10 @@ import io.github.soundsofthesun.terminal.block.TBlocks;
 import io.github.soundsofthesun.terminal.item.TItems;
 import io.github.soundsofthesun.terminal.network.TPayloads;
 import io.github.soundsofthesun.terminal.particle.TParticles;
+import io.github.soundsofthesun.terminal.villager.TVillagers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -15,8 +17,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.ItemCost;
+import net.minecraft.world.item.trading.MerchantOffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 public class Terminal implements ModInitializer {
     // Where are my functions?
@@ -42,5 +49,6 @@ public class Terminal implements ModInitializer {
         TAttachmentTypes.initialize();
         TPayloads.initialize();
         TParticles.initialize();
+        TVillagers.initialize();
     }
 }

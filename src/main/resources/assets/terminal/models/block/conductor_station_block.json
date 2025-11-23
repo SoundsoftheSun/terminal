@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "terminal:block/conductor_station_bottom",
+    "east": "terminal:block/conductor_station_side",
+    "north": "terminal:block/conductor_station_side",
+    "particle": "terminal:block/conductor_station_top",
+    "south": "terminal:block/conductor_station_side",
+    "up": "terminal:block/conductor_station_top",
+    "west": "terminal:block/conductor_station_side"
+  }
+}
