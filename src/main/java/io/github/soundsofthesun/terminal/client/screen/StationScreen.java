@@ -8,9 +8,9 @@ import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
 import io.wispforest.owo.ui.core.*;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ import java.util.Map;
 
 public class StationScreen extends BaseOwoScreen<FlowLayout> {
 
-    Text text;
+    Component text;
     LinkedHashMap<Long, String> posMap;
-    List<Component> components = new ArrayList<>();
+    List<io.wispforest.owo.ui.core.Component> components = new ArrayList<>();
     BlockPos source;
 
     public StationScreen(LinkedHashMap<Long, String> posMap, BlockPos source) {
@@ -44,24 +44,24 @@ public class StationScreen extends BaseOwoScreen<FlowLayout> {
         ;
 
         layout.child(
-                Components.label(Text.literal(this.posMap.get(this.source.asLong())))
+                Components.label(Component.literal(this.posMap.get(this.source.asLong())))
                         .shadow(true)
         );
 
         // Add source station first
         components.add(
                 Containers.grid(Sizing.fill(), Sizing.content(), 3, 4)
-                        .child(Components.label(Text.literal(this.posMap.get(this.source.asLong())))
+                        .child(Components.label(Component.literal(this.posMap.get(this.source.asLong())))
                                 .shadow(true).lineHeight(10), 0, 0)
-                        .child(Components.label(Text.literal(this.source.getX()+" "+this.source.getY()+" "+this.source.getZ()))
+                        .child(Components.label(Component.literal(this.source.getX()+" "+this.source.getY()+" "+this.source.getZ()))
                                 .shadow(true), 1, 0)
-                        .child(Components.label(Text.literal("0 Blocks Away"))
+                        .child(Components.label(Component.literal("0 Blocks Away"))
                                 .shadow(true), 2, 0)
-                        .child(Components.button(Text.literal("Rename"), button -> {
+                        .child(Components.button(Component.literal("Rename"), button -> {
                             RenameStationScreen screen = new RenameStationScreen(this.posMap.get(this.source.asLong()), this.source);
-                            MinecraftClient.getInstance().setScreen(screen);
+                            Minecraft.getInstance().setScreen(screen);
                         }), 1, 2)
-                        .child(Components.button(Text.literal("Transit"), button -> {
+                        .child(Components.button(Component.literal("Transit"), button -> {
 
                         }).active(false), 1, 3)
                         .padding(Insets.of(6))
@@ -75,14 +75,14 @@ public class StationScreen extends BaseOwoScreen<FlowLayout> {
         for (Map.Entry<Long, String> entry : this.posMap.entrySet()) {
             // Ignore source
             if (entry.getKey() == this.source.asLong()) continue;
-            BlockPos pos = BlockPos.fromLong(entry.getKey());
+            BlockPos pos = BlockPos.of(entry.getKey());
             components.add(
                     Containers.grid(Sizing.fill(), Sizing.content(), 3, 4)
-                            .child(Components.label(Text.literal(entry.getValue()))
+                            .child(Components.label(Component.literal(entry.getValue()))
                                     .shadow(true).lineHeight(10), 0, 0)
-                            .child(Components.label(Text.literal(pos.getX()+" "+pos.getY()+" "+pos.getZ()))
+                            .child(Components.label(Component.literal(pos.getX()+" "+pos.getY()+" "+pos.getZ()))
                                     .shadow(true), 1, 0)
-                            .child(Components.label(Text.literal(
+                            .child(Components.label(Component.literal(
                                                     (int) Math.sqrt(
                                             (
                                                     (pos.getX()-source.getX()) * (pos.getX()-source.getX())
@@ -98,14 +98,14 @@ public class StationScreen extends BaseOwoScreen<FlowLayout> {
                                     )+" Blocks Away"
                                     ))
                                     .shadow(true), 2, 0)
-                            .child(Components.button(Text.literal("Rename"), button -> {
+                            .child(Components.button(Component.literal("Rename"), button -> {
                                 RenameStationScreen screen = new RenameStationScreen(entry.getValue(), pos);
-                                MinecraftClient.getInstance().setScreen(screen);
+                                Minecraft.getInstance().setScreen(screen);
                             }), 1, 2)
-                            .child(Components.button(Text.literal("Transit"), button -> {
+                            .child(Components.button(Component.literal("Transit"), button -> {
                                 StationTransitC2SPayload payload = new StationTransitC2SPayload(this.source, pos);
                                 ClientPlayNetworking.send(payload);
-                                this.close();
+                                this.onClose();
                             }), 1, 3)
                             .padding(Insets.of(6))
                             .surface(Surface.DARK_PANEL)

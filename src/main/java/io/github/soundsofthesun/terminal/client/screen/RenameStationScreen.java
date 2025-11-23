@@ -8,8 +8,8 @@ import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.*;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 public class RenameStationScreen extends BaseOwoScreen<FlowLayout> {
@@ -42,12 +42,12 @@ public class RenameStationScreen extends BaseOwoScreen<FlowLayout> {
                 .child(textBox, 0, 0)
         );
 
-        layout.child(Components.button(Text.literal("Rename"), buttonComponent -> {
-            System.out.println("RENAME to "+textBox.getText());
+        layout.child(Components.button(Component.literal("Rename"), buttonComponent -> {
+            System.out.println("RENAME to "+textBox.getValue());
 
-            StationRenameC2SPayload payload = new StationRenameC2SPayload(textBox.getText(), this.pos);
+            StationRenameC2SPayload payload = new StationRenameC2SPayload(textBox.getValue(), this.pos);
             ClientPlayNetworking.send(payload);
-            this.close();
+            this.onClose();
 
         }));
 

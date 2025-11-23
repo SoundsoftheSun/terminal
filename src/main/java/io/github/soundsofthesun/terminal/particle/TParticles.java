@@ -3,16 +3,16 @@ package io.github.soundsofthesun.terminal.particle;
 import io.github.soundsofthesun.terminal.Terminal;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 
 public class TParticles {
     public static final SimpleParticleType DEBUG_PARTICLE = FabricParticleTypes.simple();
 
     public static void initialize() {
-        Registry.register(Registries.PARTICLE_TYPE, Identifier.of(Terminal.MOD_ID, "debug_particle"), DEBUG_PARTICLE);
+        Registry.register(BuiltInRegistries.PARTICLE_TYPE, ResourceLocation.fromNamespaceAndPath(Terminal.MOD_ID, "debug_particle"), DEBUG_PARTICLE);
     }
 
     public static void initializeClient() {

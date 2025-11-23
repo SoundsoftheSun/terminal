@@ -1,22 +1,22 @@
 package io.github.soundsofthesun.terminal.block.terminalblock;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.soundsofthesun.terminal.block.TBlockEntities;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.command.ModelCommandRenderer;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.state.CameraRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class TerminalBlockEntityRenderer implements BlockEntityRenderer<TerminalBlockEntity, TerminalBlockEntityRenderState> {
     public static void initialize() {
-        BlockEntityRendererFactories.register(TBlockEntities.TERMINAL_BLOCK_ENTITY, TerminalBlockEntityRenderer::new);
+        BlockEntityRenderers.register(TBlockEntities.TERMINAL_BLOCK_ENTITY, TerminalBlockEntityRenderer::new);
     }
 
-    public TerminalBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
+    public TerminalBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
@@ -24,12 +24,12 @@ public class TerminalBlockEntityRenderer implements BlockEntityRenderer<Terminal
         return new TerminalBlockEntityRenderState();
     }
 
-    @Override
-    public void updateRenderState(TerminalBlockEntity blockEntity, TerminalBlockEntityRenderState state, float tickProgress, Vec3d cameraPos, @Nullable ModelCommandRenderer.CrumblingOverlayCommand crumblingOverlay) {
-        BlockEntityRenderer.super.updateRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
-    }
+//    @Override
+//    public void updateRenderState(TerminalBlockEntity blockEntity, TerminalBlockEntityRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+//        BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
+//    }
 
     @Override
-    public void render(TerminalBlockEntityRenderState state, MatrixStack matrices, OrderedRenderCommandQueue queue, CameraRenderState cameraState) {
+    public void submit(TerminalBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
     }
 }

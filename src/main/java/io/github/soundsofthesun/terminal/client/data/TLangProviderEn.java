@@ -2,17 +2,16 @@ package io.github.soundsofthesun.terminal.client.data;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderLookup;
 import java.util.concurrent.CompletableFuture;
 
 public class TLangProviderEn extends FabricLanguageProvider {
-    public TLangProviderEn(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+    public TLangProviderEn(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, "en_us", registryLookup);
     }
 
     @Override
-    public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder b) {
+    public void generateTranslations(HolderLookup.Provider wrapperLookup, TranslationBuilder b) {
 
         // Config Translations
         b.add("text.config.terminal-cfg.title", "Terminal Config");

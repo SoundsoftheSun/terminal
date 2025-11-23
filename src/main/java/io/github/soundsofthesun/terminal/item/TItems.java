@@ -4,24 +4,23 @@ import io.github.soundsofthesun.terminal.Terminal;
 import io.github.soundsofthesun.terminal.item.items.TerminalController;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import java.util.function.Function;
 
 public class TItems {
-    public static Item register(String name, Function<Item.Settings, Item> itemFactory, Item.Settings settings) {
+    public static Item register(String name, Function<Item.Properties, Item> itemFactory, Item.Properties settings) {
 
-        RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Terminal.MOD_ID, name));
+        ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Terminal.MOD_ID, name));
 
-        Item item = itemFactory.apply(settings.registryKey(itemKey));
+        Item item = itemFactory.apply(settings.setId(itemKey));
 
-        Registry.register(Registries.ITEM, itemKey, item);
+        Registry.register(BuiltInRegistries.ITEM, itemKey, item);
 
         return item;
     }
@@ -30,19 +29,19 @@ public class TItems {
         // Add to item groups
         ItemGroupEvents.modifyEntriesEvent(Terminal.TERMINAL_GROUP_KEY)
                 .register((itemGroup) -> {
-                    itemGroup.add(TItems.TERMINAL_CONTROLLER);
+                    itemGroup.accept(TItems.TERMINAL_CONTROLLER);
                 });
     }
 
     public static void initializeClient() {
         // Tooltip translation keys
         ItemTooltipCallback.EVENT.register((itemStack, tooltipContext, tooltipType, list) -> {
-            if (itemStack.isOf(TItems.TERMINAL_CONTROLLER)) list.add(Text.translatable("itemTooltip.terminal.terminal_controller"));
+            if (itemStack.is(TItems.TERMINAL_CONTROLLER)) list.add(Component.translatable("itemTooltip.terminal.terminal_controller"));
         });
     }
 
-    public static final Item TERMINAL_CONTROLLER = register("terminal_controller", TerminalController::new, new Item.Settings()
-            .maxCount(1)
+    public static final Item TERMINAL_CONTROLLER = register("terminal_controller", TerminalController::new, new Item.Properties()
+            .stacksTo(1)
     );
 
 }

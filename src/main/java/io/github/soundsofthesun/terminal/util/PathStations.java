@@ -2,23 +2,22 @@ package io.github.soundsofthesun.terminal.util;
 
 import io.github.soundsofthesun.terminal.Terminal;
 import io.github.soundsofthesun.terminal.block.TBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class PathStations {
 
-    private TagKey<Block> railsTag = TagKey.of(RegistryKeys.BLOCK, Identifier.ofVanilla("rails"));
+    private TagKey<Block> railsTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("rails"));
 
     public ArrayList<BlockPos> validRails = new ArrayList<>();
     public ArrayList<BlockPos> networkRails = new ArrayList<>();
@@ -26,9 +25,9 @@ public class PathStations {
     public ArrayList<BlockPos> networkStations = new ArrayList<>();
     public HashSet<BlockPos> terminals = new HashSet<>();
 
-    private ServerWorld world;
+    private ServerLevel world;
 
-    public PathStations(ServerWorld world) {
+    public PathStations(ServerLevel world) {
         this.world = world;
     }
 
@@ -49,24 +48,24 @@ public class PathStations {
             };
 
             for (Direction d : lateral) {
-                BlockPos nb = current.offset(d);
+                BlockPos nb = current.relative(d);
                 enqueueWithPrev.accept(nb);
-                enqueueWithPrev.accept(nb.down());
-                enqueueWithPrev.accept(nb.up());
+                enqueueWithPrev.accept(nb.below());
+                enqueueWithPrev.accept(nb.above());
             }
         };
 
-        Function<BlockPos, BlockPos.IterationState> callback = (pos) -> {
+        Function<BlockPos, BlockPos.TraversalNodeStatus> callback = (pos) -> {
             BlockState bs = this.world.getBlockState(pos);
             if (pos.asLong() == endPos.asLong()) {
                 stations.add(pos);
                 long cur = pos.asLong();
-                pathPositions.add(BlockPos.fromLong(cur));
+                pathPositions.add(BlockPos.of(cur));
 
                 while (predecessor.containsKey(cur)) {
                     long parent = predecessor.get(cur);
                     if (parent == cur) break;
-                    pathPositions.add(BlockPos.fromLong(parent));
+                    pathPositions.add(BlockPos.of(parent));
                     cur = parent;
                     if (cur == startPos.asLong()) break;
                 }
@@ -75,56 +74,56 @@ public class PathStations {
                 validRails.clear();
                 validRails.addAll(pathPositions);
 
-                return BlockPos.IterationState.STOP;
-            } else if (bs.isIn(railsTag)) {
-                return BlockPos.IterationState.ACCEPT;
+                return BlockPos.TraversalNodeStatus.STOP;
+            } else if (bs.is(railsTag)) {
+                return BlockPos.TraversalNodeStatus.ACCEPT;
             } else if (bs.getBlock() == TBlocks.STATION_BLOCK) {
                 stations.add(pos);
-                return BlockPos.IterationState.ACCEPT;
+                return BlockPos.TraversalNodeStatus.ACCEPT;
             } else {
-                return BlockPos.IterationState.SKIP;
+                return BlockPos.TraversalNodeStatus.SKIP;
             }
         };
 
         int maxDepth = Terminal.CONFIG.max_network_size();
         int maxIterations = 100000;
 
-        BlockPos.iterateRecursively(startPos, maxDepth, maxIterations, enqueueNeighbors, callback);
+        BlockPos.breadthFirstTraversal(startPos, maxDepth, maxIterations, enqueueNeighbors, callback);
     }
 
     public void getNetwork(BlockPos startPos) {
         BiConsumer<BlockPos, Consumer<BlockPos>> enqueueNeighbors = (current, enqueue) -> {
             Direction[] lateral = new Direction[] { Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH };
             for (Direction d : lateral) {
-                BlockPos nb = current.offset(d);
+                BlockPos nb = current.relative(d);
                 enqueue.accept(nb);
-                enqueue.accept(nb.down());
-                enqueue.accept(nb.up());
+                enqueue.accept(nb.below());
+                enqueue.accept(nb.above());
             }
         };
 
-        Function<BlockPos, BlockPos.IterationState> callback = (pos) -> {
+        Function<BlockPos, BlockPos.TraversalNodeStatus> callback = (pos) -> {
             BlockState bs = this.world.getBlockState(pos);
-            if (bs.isIn(railsTag)) {
+            if (bs.is(railsTag)) {
                 networkRails.add(pos);
-                return BlockPos.IterationState.ACCEPT;
+                return BlockPos.TraversalNodeStatus.ACCEPT;
             } if (bs.getBlock() == TBlocks.STATION_BLOCK) {
                 networkRails.add(pos);
                 networkStations.add(pos);
-                return BlockPos.IterationState.ACCEPT;
+                return BlockPos.TraversalNodeStatus.ACCEPT;
             } else if (bs.getBlock() == TBlocks.TERMINAL_BLOCK) {
                 networkRails.add(pos);
                 terminals.add(pos);
-                return BlockPos.IterationState.ACCEPT;
+                return BlockPos.TraversalNodeStatus.ACCEPT;
             } else {
-                    return BlockPos.IterationState.SKIP;
+                    return BlockPos.TraversalNodeStatus.SKIP;
                 }
             };
 
             int maxDepth = Terminal.CONFIG.max_network_size();
             int maxIterations = 100000;
 
-            BlockPos.iterateRecursively(startPos, maxDepth, maxIterations, enqueueNeighbors, callback);
+            BlockPos.breadthFirstTraversal(startPos, maxDepth, maxIterations, enqueueNeighbors, callback);
         }
 }
 

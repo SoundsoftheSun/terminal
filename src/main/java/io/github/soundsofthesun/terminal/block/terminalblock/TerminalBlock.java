@@ -4,57 +4,57 @@ import com.mojang.serialization.MapCodec;
 import io.github.soundsofthesun.terminal.block.TBlockEntities;
 import io.github.soundsofthesun.terminal.block.properties.TProperties;
 import io.github.soundsofthesun.terminal.block.switchblock.SwitchBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class TerminalBlock extends BlockWithEntity implements BlockEntityProvider {
-    public TerminalBlock(Settings settings) {
+public class TerminalBlock extends BaseEntityBlock implements EntityBlock {
+    public TerminalBlock(Properties settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState()
-                .with(TProperties.ACTIVE_PROPERTY, TProperties.ACTIVE_STATE.ACTIVE)
-                .with(TProperties.LIGHT_PROPERTY, TProperties.LIGHT_STATE.OFF)
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(TProperties.ACTIVE_PROPERTY, TProperties.ACTIVE_STATE.ACTIVE)
+                .setValue(TProperties.LIGHT_PROPERTY, TProperties.LIGHT_STATE.OFF)
         );
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(TProperties.ACTIVE_PROPERTY);
         builder.add(TProperties.LIGHT_PROPERTY);
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.isClient()) return ActionResult.SUCCESS;
-        if (!player.getAbilities().allowModifyWorld) return ActionResult.PASS;
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        if (world.isClientSide()) return InteractionResult.SUCCESS;
+        if (!player.getAbilities().mayBuild) return InteractionResult.PASS;
 
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return createCodec(SwitchBlock::new);
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(SwitchBlock::new);
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TerminalBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, TBlockEntities.TERMINAL_BLOCK_ENTITY, TerminalBlockEntity::tick);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, TBlockEntities.TERMINAL_BLOCK_ENTITY, TerminalBlockEntity::tick);
     }
 }

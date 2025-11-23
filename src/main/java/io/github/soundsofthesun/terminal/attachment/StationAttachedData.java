@@ -3,11 +3,10 @@ package io.github.soundsofthesun.terminal.attachment;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-
 import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 
 public record StationAttachedData(LinkedHashMap<Long, String> posMap) {
 
@@ -33,7 +32,7 @@ public record StationAttachedData(LinkedHashMap<Long, String> posMap) {
                             .collect(Collectors.toList())
             );
 
-    public static final PacketCodec<ByteBuf, StationAttachedData> PACKET_CODEC = PacketCodecs.codec(CODEC);
+    public static final StreamCodec<ByteBuf, StationAttachedData> PACKET_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
     public static final StationAttachedData DEFAULT = new StationAttachedData(new LinkedHashMap<>());
 

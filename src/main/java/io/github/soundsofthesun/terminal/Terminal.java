@@ -8,13 +8,13 @@ import io.github.soundsofthesun.terminal.network.TPayloads;
 import io.github.soundsofthesun.terminal.particle.TParticles;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,15 +26,15 @@ public class Terminal implements ModInitializer {
     public static final io.github.soundsofthesun.terminal.TerminalCfg CONFIG = io.github.soundsofthesun.terminal.TerminalCfg.createAndLoad();
 
     // Item Group
-    public static final RegistryKey<ItemGroup> TERMINAL_GROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(Terminal.MOD_ID, "terminal_group"));
-    public static final ItemGroup TERMINAL_GROUP = FabricItemGroup.builder()
+    public static final ResourceKey<CreativeModeTab> TERMINAL_GROUP_KEY = ResourceKey.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), ResourceLocation.fromNamespaceAndPath(Terminal.MOD_ID, "terminal_group"));
+    public static final CreativeModeTab TERMINAL_GROUP = FabricItemGroup.builder()
             .icon(() -> new ItemStack(TItems.TERMINAL_CONTROLLER))
-            .displayName(Text.translatable("terminal_group.terminal"))
+            .title(Component.translatable("terminal_group.terminal"))
             .build();
 
     @Override
     public void onInitialize() {
-        Registry.register(Registries.ITEM_GROUP, TERMINAL_GROUP_KEY, TERMINAL_GROUP);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, TERMINAL_GROUP_KEY, TERMINAL_GROUP);
 
         TItems.initialize();
         TBlocks.initialize();

@@ -10,40 +10,44 @@ import io.github.soundsofthesun.terminal.block.terminalblock.TerminalBlockEntity
 import io.github.soundsofthesun.terminal.network.s2c.StationInteractS2CPayload;
 import io.github.soundsofthesun.terminal.util.PathStations;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class StationBlock extends BlockWithEntity implements BlockEntityProvider {
-    public StationBlock(Settings settings) {
+public class StationBlock extends BaseEntityBlock implements EntityBlock {
+    public StationBlock(Properties settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState()
-                .with(TProperties.LIGHT_PROPERTY, TProperties.LIGHT_STATE.OFF)
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(TProperties.LIGHT_PROPERTY, TProperties.LIGHT_STATE.OFF)
         );
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(TProperties.LIGHT_PROPERTY);
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.isClient()) return ActionResult.SUCCESS;
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        if (world.isClientSide()) return InteractionResult.SUCCESS;
 
         BlockEntity stationBlockEntity = world.getBlockEntity(pos);
         if (stationBlockEntity instanceof StationBlockEntity) {
@@ -52,47 +56,47 @@ public class StationBlock extends BlockWithEntity implements BlockEntityProvider
             if (terminalBlockEntity instanceof TerminalBlockEntity) {
                 StationAttachedData stationData = terminalBlockEntity.getAttachedOrElse(TAttachmentTypes.STATION_ATTACHMENT_TYPE, StationAttachedData.DEFAULT);
                 if (!stationData.posMap().isEmpty()) {
-                    ServerPlayNetworking.send((ServerPlayerEntity) player, new StationInteractS2CPayload(stationData, pos));
+                    ServerPlayNetworking.send((ServerPlayer) player, new StationInteractS2CPayload(stationData, pos));
                 }
             } else {
-                PathStations path = new PathStations((ServerWorld) world);
+                PathStations path = new PathStations((ServerLevel) world);
                 path.getNetwork(pos);
                 if (!path.terminals.isEmpty()) {
                     BlockEntity newTerminalBlockEntity = world.getBlockEntity(path.terminals.iterator().next());
                     if (newTerminalBlockEntity instanceof TerminalBlockEntity) {
-                        world.setBlockState(newTerminalBlockEntity.getPos(), world.getBlockState(newTerminalBlockEntity.getPos()).with(TProperties.ACTIVE_PROPERTY, TProperties.ACTIVE_STATE.ACTIVE));
+                        world.setBlockAndUpdate(newTerminalBlockEntity.getBlockPos(), world.getBlockState(newTerminalBlockEntity.getBlockPos()).setValue(TProperties.ACTIVE_PROPERTY, TProperties.ACTIVE_STATE.ACTIVE));
                     }
                 } else {
                     path.networkStations.forEach(pos2 -> {
-                        world.setBlockState(pos2, world.getBlockState(pos2).with(TProperties.LIGHT_PROPERTY, TProperties.LIGHT_STATE.RED));
-                        world.playSound(null, pos2, SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.PLAYERS, 1F, 1F);
+                        world.setBlockAndUpdate(pos2, world.getBlockState(pos2).setValue(TProperties.LIGHT_PROPERTY, TProperties.LIGHT_STATE.RED));
+                        world.playSound(null, pos2, SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 1F, 1F);
                     });
                 }
             }
         }
 
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return Block.createCuboidShape(4, 0, 4, 12, 24, 12);
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return Block.box(4, 0, 4, 12, 24, 12);
     }
 
     @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return createCodec(StationBlock::new);
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(StationBlock::new);
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new StationBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, TBlockEntities.STATION_BLOCK_ENTITY, io.github.soundsofthesun.terminal.block.station.StationBlockEntity::tick);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, TBlockEntities.STATION_BLOCK_ENTITY, io.github.soundsofthesun.terminal.block.station.StationBlockEntity::tick);
     }
 
 }

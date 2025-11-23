@@ -3,78 +3,83 @@ package io.github.soundsofthesun.terminal.block.switchblock;
 import com.mojang.serialization.MapCodec;
 import io.github.soundsofthesun.terminal.block.TBlockEntities;
 import io.github.soundsofthesun.terminal.block.properties.TProperties;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class SwitchBlock extends BlockWithEntity implements BlockEntityProvider {
-    public SwitchBlock(Settings settings) {
+public class SwitchBlock extends BaseEntityBlock implements EntityBlock {
+    public SwitchBlock(Properties settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState()
-                .with(HorizontalFacingBlock.FACING, Direction.NORTH)
-                .with(TProperties.ACTIVE_PROPERTY, TProperties.ACTIVE_STATE.INACTIVE)
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH)
+                .setValue(TProperties.ACTIVE_PROPERTY, TProperties.ACTIVE_STATE.INACTIVE)
         );
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(HorizontalFacingBlock.FACING);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(HorizontalDirectionalBlock.FACING);
         builder.add(TProperties.ACTIVE_PROPERTY);
     }
 
     @Override
-    protected boolean hasComparatorOutput(BlockState state) {
+    protected boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 
 
     @Override
-    protected int getComparatorOutput(BlockState state, World world, BlockPos pos, Direction direction) {
-        return state.get(TProperties.ACTIVE_PROPERTY).getIndex();
+    protected int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos, Direction direction) {
+        return state.getValue(TProperties.ACTIVE_PROPERTY).getIndex();
     }
 
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        Direction playerFacing = ctx.getHorizontalPlayerFacing();
-        return this.getDefaultState().with(HorizontalFacingBlock.FACING, playerFacing.getOpposite());
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        Direction playerFacing = ctx.getHorizontalDirection();
+        return this.defaultBlockState().setValue(HorizontalDirectionalBlock.FACING, playerFacing.getOpposite());
     }
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.isClient()) return ActionResult.SUCCESS;
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        if (world.isClientSide()) return InteractionResult.SUCCESS;
 
-        return ActionResult.PASS;
-    }
-
-    @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return Block.createCuboidShape(4, 0, 4, 12, 8, 12);
+        return InteractionResult.PASS;
     }
 
     @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return createCodec(SwitchBlock::new);
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return Block.box(4, 0, 4, 12, 8, 12);
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(SwitchBlock::new);
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new SwitchBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, TBlockEntities.SWITCH_BLOCK_ENTITY, SwitchBlockEntity::tick);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, TBlockEntities.SWITCH_BLOCK_ENTITY, SwitchBlockEntity::tick);
     }
 }
