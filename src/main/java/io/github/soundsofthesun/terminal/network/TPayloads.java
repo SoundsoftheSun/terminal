@@ -2,6 +2,7 @@ package io.github.soundsofthesun.terminal.network;
 
 import io.github.soundsofthesun.terminal.network.c2s.StationRenameC2SPayload;
 import io.github.soundsofthesun.terminal.network.c2s.StationTransitC2SPayload;
+import io.github.soundsofthesun.terminal.network.s2c.StationInteractS2CPayload;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 
 public class TPayloads {
@@ -11,5 +12,7 @@ public class TPayloads {
 
         PayloadTypeRegistry.playC2S().register(StationRenameC2SPayload.ID, StationRenameC2SPayload.CODEC);
         StationRenameC2SPayload.initialize();
+
+        PayloadTypeRegistry.playS2C().register(StationInteractS2CPayload.ID, StationInteractS2CPayload.CODEC);
     }
 }

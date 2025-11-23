@@ -1,4 +1,4 @@
-package io.github.soundsofthesun.terminal.screen;
+package io.github.soundsofthesun.terminal.client.screen;
 
 import io.github.soundsofthesun.terminal.network.c2s.StationTransitC2SPayload;
 import io.wispforest.owo.ui.base.BaseOwoScreen;
@@ -25,8 +25,7 @@ public class StationScreen extends BaseOwoScreen<FlowLayout> {
     List<Component> components = new ArrayList<>();
     BlockPos source;
 
-    public StationScreen(Text text, LinkedHashMap<Long, String> posMap, BlockPos source) {
-        this.text = text;
+    public StationScreen(LinkedHashMap<Long, String> posMap, BlockPos source) {
         this.posMap = posMap;
         this.source = source;
     }

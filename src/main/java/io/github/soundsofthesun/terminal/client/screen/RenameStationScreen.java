@@ -1,4 +1,4 @@
-package io.github.soundsofthesun.terminal.screen;
+package io.github.soundsofthesun.terminal.client.screen;
 
 import io.github.soundsofthesun.terminal.network.c2s.StationRenameC2SPayload;
 import io.wispforest.owo.ui.base.BaseOwoScreen;

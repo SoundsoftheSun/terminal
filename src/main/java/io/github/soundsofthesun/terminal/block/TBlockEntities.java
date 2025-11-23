@@ -15,7 +15,9 @@ import net.minecraft.util.Identifier;
 
 public class TBlockEntities {
 
-    public static void initialize() {
+    public static void initialize() {}
+
+    public static void initializeClient() {
         StationBlockEntityRenderer.initialize();
         SwitchBlockEntityRenderer.initialize();
         TerminalBlockEntityRenderer.initialize();
