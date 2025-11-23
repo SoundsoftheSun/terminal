@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "terminal:item/debug_item"
+    "model": "terminal:item/switch_block"
   }
 }

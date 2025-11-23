@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "terminal:item/station_block"
+    "model": "terminal:block/terminal_block_green"
   }
 }
