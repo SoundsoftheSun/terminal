@@ -40,8 +40,6 @@ public class TItems {
         });
     }
 
-    public static final Item TERMINAL_CONTROLLER = register("terminal_controller", TerminalController::new, new Item.Properties()
-            .stacksTo(1)
-    );
+    public static final Item TERMINAL_CONTROLLER = register("terminal_controller", TerminalController::new, new Item.Properties());
 
 }

@@ -67,8 +67,17 @@ public class TVillagers {
                 factories -> {
                     factories.add((entity, random) -> new MerchantOffer(
                             new ItemCost(Items.EMERALD, 4),
-                            Optional.of(new ItemCost(TItems.TERMINAL_CONTROLLER, 1)),
+                            Optional.empty(),
                             TItems.TERMINAL_CONTROLLER.getDefaultInstance(),
+                            0,
+                            8,
+                            1,
+                            0.04F
+                    ));
+                    factories.add((entity, random) -> new MerchantOffer(
+                            new ItemCost(Items.EMERALD, 4),
+                            Optional.of(new ItemCost(TItems.TERMINAL_CONTROLLER, 1)),
+                            TBlocks.TERMINAL_BLOCK.asItem().getDefaultInstance(),
                             0,
                             8,
                             1,
@@ -76,5 +85,34 @@ public class TVillagers {
                     ));
                 }
         );
+
+        TradeOfferHelper.registerVillagerOffers(
+                CONDUCTOR_KEY,
+                2,
+                factories -> {
+                    factories.add((entity, random) -> new MerchantOffer(
+                            new ItemCost(Items.EMERALD, 4),
+                            Optional.of(new ItemCost(TItems.TERMINAL_CONTROLLER, 1)),
+                            TBlocks.SWITCH_BLOCK.asItem().getDefaultInstance(),
+                            0,
+                            8,
+                            1,
+                            0.04F
+                    ));
+                    factories.add((entity, random) -> new MerchantOffer(
+                            new ItemCost(Items.EMERALD, 4),
+                            Optional.of(new ItemCost(TItems.TERMINAL_CONTROLLER, 1)),
+                            TBlocks.STATION_BLOCK.asItem().getDefaultInstance(),
+                            0,
+                            8,
+                            1,
+                            0.04F
+                    ));
+
+                }
+        );
+
+
+
     }
 }
