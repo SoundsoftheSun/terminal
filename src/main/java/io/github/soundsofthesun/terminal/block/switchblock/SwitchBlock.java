@@ -52,9 +52,7 @@ public class SwitchBlock extends BlockWithEntity implements BlockEntityProvider 
     }
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (!(world.getBlockEntity(pos) instanceof SwitchBlockEntity))
-            return super.onUse(state, world, pos, player, hit);
-        if (!player.getAbilities().allowModifyWorld) return ActionResult.PASS;
+        if (world.isClient()) return ActionResult.SUCCESS;
 
         return ActionResult.PASS;
     }

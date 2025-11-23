@@ -36,9 +36,8 @@ public class TerminalBlock extends BlockWithEntity implements BlockEntityProvide
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (!(world.getBlockEntity(pos) instanceof TerminalBlockEntity)) {
-            return super.onUse(state, world, pos, player, hit);
-        }
+        if (world.isClient()) return ActionResult.SUCCESS;
+        if (!player.getAbilities().allowModifyWorld) return ActionResult.PASS;
 
         return ActionResult.PASS;
     }
