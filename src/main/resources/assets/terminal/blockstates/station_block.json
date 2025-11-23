@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "light_state=off": {
+      "model": "terminal:block/station_block"
+    },
+    "light_state=green": {
+      "model": "terminal:block/station_block_green"
+    },
+    "light_state=yellow": {
+      "model": "terminal:block/station_block_yellow"
+    },
+    "light_state=pending": {
+      "model": "terminal:block/station_block_yellow"
+    },
+    "light_state=red": {
+      "model": "terminal:block/station_block_red"
+    }
+  }
+}

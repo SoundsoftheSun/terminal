@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "terminal:block/switch_block"
+    },
+    "facing=east": {
+      "model": "terminal:block/switch_block",
+          "y": 90
+    },
+    "facing=south": {
+      "model": "terminal:block/switch_block",
+          "y": 180
+    },
+    "facing=west": {
+      "model": "terminal:block/switch_block",
+          "y": 270
+    }
+  }
+}

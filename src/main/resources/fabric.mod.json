@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "terminal",
+  "version": "${version}",
+  "name": "Terminal",
+  "description": "Travel your world with networked train stations!",
+  "authors": [
+    "SoundsoftheSun"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/terminal/textures/block/terminal_block_green.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "io.github.soundsofthesun.terminal.client.TerminalDataGenerator"
+    ],
+    "client": [
+      "io.github.soundsofthesun.terminal.client.TerminalClient"
+    ],
+    "main": [
+      "io.github.soundsofthesun.terminal.Terminal"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "owo-lib": "${owo_version}"
+  }
+}
