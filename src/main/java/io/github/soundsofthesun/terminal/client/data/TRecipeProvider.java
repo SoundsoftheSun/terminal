@@ -9,6 +9,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import java.util.concurrent.CompletableFuture;
@@ -34,7 +35,7 @@ public class TRecipeProvider extends FabricRecipeProvider {
                         .define('t', Items.TINTED_GLASS)
                         .define('l', Items.LIGHTNING_ROD)
                         .group("terminal")
-                        .unlockedBy(getHasName(Items.LIGHTNING_ROD), has(Items.LIGHTNING_ROD))
+                        .unlockedBy(getHasName(Items.RAIL), has(Items.RAIL))
                         .save(output);
 
                 // switch block
@@ -70,6 +71,18 @@ public class TRecipeProvider extends FabricRecipeProvider {
                         .group("terminal")
                         .unlockedBy(getHasName(TItems.TERMINAL_CONTROLLER), has(TItems.TERMINAL_CONTROLLER))
                         .save(output);
+
+                // conductor station
+                shaped(RecipeCategory.TRANSPORTATION, TBlocks.CONDUCTOR_STATION_BLOCK, 1)
+                        .pattern("rrr")
+                        .pattern("ppp")
+                        .pattern("ppp")
+                        .define('r', ItemTags.RAILS)
+                        .define('p', ItemTags.PLANKS)
+                        .group("terminal")
+                        .unlockedBy(getHasName(Items.RAIL), has(Items.RAIL))
+                        .save(output);
+
             }
         };
     }
