@@ -41,7 +41,6 @@ public class TerminalBlockEntity extends BlockEntity {
             if (be.path == null) be.path = new PathStations(serverWorld);
             be.path.getNetwork(blockPos);
             LinkedHashMap<Long, String> newMap = new LinkedHashMap<>();
-            System.out.println("TERMSIZE START");
             if (be.path.terminals.size() > 1) {
                 be.path.terminals.forEach(System.out::println);
                 System.out.println(blockPos);
