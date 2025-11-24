@@ -7,7 +7,9 @@
   "authors": [
     "SoundsoftheSun"
   ],
-  "contact": {},
+  "contact": {
+    "Github": "https://github.com/soundsofthesun/terminal"
+  },
   "license": "MIT",
   "icon": "assets/terminal/textures/block/terminal_block_green.png",
   "environment": "*",
