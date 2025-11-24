@@ -54,7 +54,7 @@ public class TerminalBlockEntity extends BlockEntity {
                     if (serverWorld.getBlockEntity(pos) instanceof StationBlockEntity sbe) {
                         newMap.put(pos.asLong(), sbe.getAttachedOrCreate(TAttachmentTypes.NAME_ATTACHED_DATA).name());
                         sbe.setAttached(TAttachmentTypes.TERMINAL_ATTACHED_DATA, new TerminalAttachedData(blockPos));
-                        world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(TProperties.LIGHT_PROPERTY, TProperties.LIGHT_STATE.PENDING));
+                        world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(TProperties.LIGHT_PROPERTY, TProperties.LIGHT_STATE.GREEN));
                     }
                 });
                 be.setAttached(TAttachmentTypes.STATION_ATTACHMENT_TYPE, new StationAttachedData(newMap));

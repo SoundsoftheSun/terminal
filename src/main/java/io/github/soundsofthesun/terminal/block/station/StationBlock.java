@@ -32,7 +32,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class StationBlock extends BaseEntityBlock implements EntityBlock {
+public class StationBlock extends BaseEntityBlock implements EntityBlock { // TODO make yellow when a player is in transit on path
     public StationBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(this.stateDefinition.any()
