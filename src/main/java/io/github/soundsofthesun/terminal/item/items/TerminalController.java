@@ -16,20 +16,4 @@ public class TerminalController extends Item {
     public TerminalController(Properties settings) {
         super(settings);
     }
-
-    @Override
-    public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, @Nullable EquipmentSlot slot) {
-    }
-
-    @Override
-    public InteractionResult use(Level world, Player entity, InteractionHand hand) {
-
-        return InteractionResult.SUCCESS;
-    }
-
-    @Override
-    public ItemUseAnimation getUseAnimation(ItemStack stack) {
-        return ItemUseAnimation.SPEAR;
-    }
-
 }
