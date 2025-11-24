@@ -5,7 +5,7 @@ import io.github.soundsofthesun.terminal.attachment.NameAttachedData;
 import io.github.soundsofthesun.terminal.attachment.StationAttachedData;
 import io.github.soundsofthesun.terminal.attachment.TAttachmentTypes;
 import io.github.soundsofthesun.terminal.attachment.TerminalAttachedData;
-import io.github.soundsofthesun.terminal.block.station.StationBlockEntity;
+import io.github.soundsofthesun.terminal.block.stationblock.StationBlockEntity;
 import io.github.soundsofthesun.terminal.block.terminalblock.TerminalBlockEntity;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;

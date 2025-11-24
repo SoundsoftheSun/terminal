@@ -1,8 +1,8 @@
 package io.github.soundsofthesun.terminal.block;
 
 import io.github.soundsofthesun.terminal.Terminal;
-import io.github.soundsofthesun.terminal.block.station.StationBlockEntity;
-import io.github.soundsofthesun.terminal.block.station.StationBlockEntityRenderer;
+import io.github.soundsofthesun.terminal.block.stationblock.StationBlockEntity;
+import io.github.soundsofthesun.terminal.block.stationblock.StationBlockEntityRenderer;
 import io.github.soundsofthesun.terminal.block.switchblock.SwitchBlockEntity;
 import io.github.soundsofthesun.terminal.block.switchblock.SwitchBlockEntityRenderer;
 import io.github.soundsofthesun.terminal.block.terminalblock.TerminalBlockEntity;

@@ -2,7 +2,7 @@ package io.github.soundsofthesun.terminal.block;
 
 import io.github.soundsofthesun.terminal.Terminal;
 import io.github.soundsofthesun.terminal.block.conductorstation.ConductorStation;
-import io.github.soundsofthesun.terminal.block.station.StationBlock;
+import io.github.soundsofthesun.terminal.block.stationblock.StationBlock;
 import io.github.soundsofthesun.terminal.block.switchblock.SwitchBlock;
 import io.github.soundsofthesun.terminal.block.terminalblock.TerminalBlock;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;

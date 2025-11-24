@@ -5,7 +5,7 @@ import io.github.soundsofthesun.terminal.attachment.TAttachmentTypes;
 import io.github.soundsofthesun.terminal.attachment.TerminalAttachedData;
 import io.github.soundsofthesun.terminal.block.TBlockEntities;
 import io.github.soundsofthesun.terminal.block.properties.TProperties;
-import io.github.soundsofthesun.terminal.block.station.StationBlockEntity;
+import io.github.soundsofthesun.terminal.block.stationblock.StationBlockEntity;
 import io.github.soundsofthesun.terminal.util.PathStations;
 import java.util.LinkedHashMap;
 import net.minecraft.core.BlockPos;

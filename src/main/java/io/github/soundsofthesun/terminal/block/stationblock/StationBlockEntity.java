@@ -1,4 +1,4 @@
-package io.github.soundsofthesun.terminal.block.station;
+package io.github.soundsofthesun.terminal.block.stationblock;
 
 import io.github.soundsofthesun.terminal.attachment.TAttachmentTypes;
 import io.github.soundsofthesun.terminal.attachment.TransitAttachedData;

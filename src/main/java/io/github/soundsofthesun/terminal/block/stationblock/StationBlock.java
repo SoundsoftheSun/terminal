@@ -1,4 +1,4 @@
-package io.github.soundsofthesun.terminal.block.station;
+package io.github.soundsofthesun.terminal.block.stationblock;
 
 import com.mojang.serialization.MapCodec;
 import io.github.soundsofthesun.terminal.attachment.StationAttachedData;
@@ -96,7 +96,7 @@ public class StationBlock extends BaseEntityBlock implements EntityBlock { // TO
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, TBlockEntities.STATION_BLOCK_ENTITY, io.github.soundsofthesun.terminal.block.station.StationBlockEntity::tick);
+        return createTickerHelper(type, TBlockEntities.STATION_BLOCK_ENTITY, io.github.soundsofthesun.terminal.block.stationblock.StationBlockEntity::tick);
     }
 
 }

@@ -1,4 +1,4 @@
-package io.github.soundsofthesun.terminal.block.station;
+package io.github.soundsofthesun.terminal.block.stationblock;
 
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 
