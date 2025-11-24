@@ -70,7 +70,8 @@ public class TBlocks {
                     .noOcclusion()
                     .mapColor(MapColor.COLOR_GRAY)
                     .instrument(NoteBlockInstrument.BASEDRUM)
-                    .strength(1.5F, 1200.0F)
+                    .requiresCorrectToolForDrops()
+                    .strength(3F, 1200.0F)
             ,
             true
     );
@@ -82,6 +83,7 @@ public class TBlocks {
                     .noOcclusion()
                     .mapColor(MapColor.EMERALD)
                     .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
                     .strength(1.5F, 1200.0F)
             ,
             true
@@ -95,7 +97,8 @@ public class TBlocks {
                     .mapColor(MapColor.ICE)
                     .instrument(NoteBlockInstrument.BASEDRUM)
                     .lightLevel(state -> 15)
-                    .strength(3.0F, 1200.0F),
+                    .requiresCorrectToolForDrops()
+                    .strength(3F, 1200.0F),
             true
     );
 
@@ -106,7 +109,8 @@ public class TBlocks {
                     .noOcclusion()
                     .mapColor(MapColor.COLOR_BLACK)
                     .instrument(NoteBlockInstrument.COW_BELL)
-                    .strength(3.0F, 5F),
+                    .requiresCorrectToolForDrops()
+                    .strength(2.5F, 5F),
             true
     );
 

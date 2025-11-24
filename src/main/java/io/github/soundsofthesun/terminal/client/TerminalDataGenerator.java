@@ -1,9 +1,6 @@
 package io.github.soundsofthesun.terminal.client;
 
-import io.github.soundsofthesun.terminal.client.data.TBlockLootTableProvider;
-import io.github.soundsofthesun.terminal.client.data.TLangProviderEn;
-import io.github.soundsofthesun.terminal.client.data.TModelProvider;
-import io.github.soundsofthesun.terminal.client.data.TRecipeProvider;
+import io.github.soundsofthesun.terminal.client.data.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
@@ -16,5 +13,6 @@ public class TerminalDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(TRecipeProvider::new);
         pack.addProvider(TBlockLootTableProvider::new);
         pack.addProvider(TLangProviderEn::new);
+        pack.addProvider(TBlockTagsProvider::new);
     }
 }
