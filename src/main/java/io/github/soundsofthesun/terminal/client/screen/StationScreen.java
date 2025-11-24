@@ -25,7 +25,7 @@ public class StationScreen extends BaseOwoScreen<FlowLayout> {
     List<io.wispforest.owo.ui.core.Component> components = new ArrayList<>();
     BlockPos source;
 
-    public StationScreen(LinkedHashMap<Long, String> posMap, BlockPos source) {
+    public StationScreen(LinkedHashMap<Long, String> posMap, BlockPos source) { //TODO sorting stations on screen
         this.posMap = posMap;
         this.source = source;
     }
@@ -50,7 +50,7 @@ public class StationScreen extends BaseOwoScreen<FlowLayout> {
 
         // Add source station first
         components.add(
-                Containers.grid(Sizing.fill(), Sizing.content(), 3, 4)
+                Containers.grid(Sizing.fill(), Sizing.content(), 3, 5)
                         .child(Components.label(Component.literal(this.posMap.get(this.source.asLong())))
                                 .shadow(true).lineHeight(10), 0, 0)
                         .child(Components.label(Component.literal(this.source.getX()+" "+this.source.getY()+" "+this.source.getZ()))
@@ -60,10 +60,10 @@ public class StationScreen extends BaseOwoScreen<FlowLayout> {
                         .child(Components.button(Component.literal("Rename"), button -> {
                             RenameStationScreen screen = new RenameStationScreen(this.posMap.get(this.source.asLong()), this.source);
                             Minecraft.getInstance().setScreen(screen);
-                        }), 1, 2)
+                        }), 1, 3)
                         .child(Components.button(Component.literal("Transit"), button -> {
 
-                        }).active(false), 1, 3)
+                        }).active(false), 1, 4)
                         .padding(Insets.of(6))
                         .surface(Surface.DARK_PANEL)
                         .verticalAlignment(VerticalAlignment.CENTER)
@@ -77,7 +77,7 @@ public class StationScreen extends BaseOwoScreen<FlowLayout> {
             if (entry.getKey() == this.source.asLong()) continue;
             BlockPos pos = BlockPos.of(entry.getKey());
             components.add(
-                    Containers.grid(Sizing.fill(), Sizing.content(), 3, 4)
+                    Containers.grid(Sizing.fill(), Sizing.content(), 3, 5)
                             .child(Components.label(Component.literal(entry.getValue()))
                                     .shadow(true).lineHeight(10), 0, 0)
                             .child(Components.label(Component.literal(pos.getX()+" "+pos.getY()+" "+pos.getZ()))
@@ -101,12 +101,12 @@ public class StationScreen extends BaseOwoScreen<FlowLayout> {
                             .child(Components.button(Component.literal("Rename"), button -> {
                                 RenameStationScreen screen = new RenameStationScreen(entry.getValue(), pos);
                                 Minecraft.getInstance().setScreen(screen);
-                            }), 1, 2)
+                            }), 1, 3)
                             .child(Components.button(Component.literal("Transit"), button -> {
                                 StationTransitC2SPayload payload = new StationTransitC2SPayload(this.source, pos);
                                 ClientPlayNetworking.send(payload);
                                 this.onClose();
-                            }), 1, 3)
+                            }), 1, 4)
                             .padding(Insets.of(6))
                             .surface(Surface.DARK_PANEL)
                             .verticalAlignment(VerticalAlignment.CENTER)
