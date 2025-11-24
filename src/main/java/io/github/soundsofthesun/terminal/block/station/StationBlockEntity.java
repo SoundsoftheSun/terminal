@@ -53,7 +53,7 @@ public class StationBlockEntity extends BlockEntity {
 
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState oldState) {
-        super.preRemoveSideEffects(pos, oldState);//TODO
+        super.preRemoveSideEffects(pos, oldState);
     }
 
 }
