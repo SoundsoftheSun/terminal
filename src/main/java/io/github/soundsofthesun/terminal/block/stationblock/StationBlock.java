@@ -46,6 +46,17 @@ public class StationBlock extends BaseEntityBlock implements EntityBlock { // TO
     }
 
     @Override
+    protected boolean hasAnalogOutputSignal(BlockState state) {
+        return true;
+    }
+
+
+    @Override
+    protected int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos, Direction direction) {
+        return state.getValue(TProperties.LIGHT_PROPERTY).getIndex();
+    }
+
+    @Override
     protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
         if (world.isClientSide()) return InteractionResult.SUCCESS;
 
