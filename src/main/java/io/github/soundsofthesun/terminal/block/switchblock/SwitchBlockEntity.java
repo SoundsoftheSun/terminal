@@ -60,9 +60,9 @@ public class SwitchBlockEntity extends BlockEntity {
 
 
         this.target = pos.relative(this.facing);
-        this.checkForward = target.relative(this.facing, 2);
-        this.checkLeft = target.relative(this.left, 2);
-        this.checkRight = target.relative(this.right, 2);
+        this.checkForward = target.relative(this.facing, 1);
+        this.checkLeft = target.relative(this.left, 1);
+        this.checkRight = target.relative(this.right, 1);
         this.box = new AABB(target).inflate(1);
     }
 
