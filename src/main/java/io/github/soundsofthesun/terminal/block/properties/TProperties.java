@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 public class TProperties {
 
     public enum LIGHT_STATE implements StringRepresentable {
-        GREEN(0, "green"), YELLOW(1, "yellow"), RED(2, "red"), OFF(3, "off"), PENDING(4, "pending");
+        GREEN(3, "green"), YELLOW(2, "yellow"), RED(1, "red"), OFF(0, "off"), PENDING(4, "pending");
 
         private final String id;
         private final int index;
@@ -20,6 +20,8 @@ public class TProperties {
         public String getSerializedName() {
             return this.id;
         }
+
+        public int getIndex() { return this.index; }
 
         public static final StringRepresentable.EnumCodec<LIGHT_STATE> CODEC = StringRepresentable.fromEnum(LIGHT_STATE::values);
 
