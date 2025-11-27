@@ -1,6 +1,7 @@
 package io.github.soundsofthesun.terminal.item;
 
 import io.github.soundsofthesun.terminal.Terminal;
+import io.github.soundsofthesun.terminal.item.items.GoldMinecartItem;
 import io.github.soundsofthesun.terminal.item.items.TerminalController;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -11,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+
 import java.util.function.Function;
 
 public class TItems {
@@ -30,6 +32,7 @@ public class TItems {
         ItemGroupEvents.modifyEntriesEvent(Terminal.TERMINAL_GROUP_KEY)
                 .register((itemGroup) -> {
                     itemGroup.accept(TItems.TERMINAL_CONTROLLER);
+                    itemGroup.accept(TItems.GOLD_MINECART_ITEM);
                 });
     }
 
@@ -41,5 +44,7 @@ public class TItems {
     }
 
     public static final Item TERMINAL_CONTROLLER = register("terminal_controller", TerminalController::new, new Item.Properties());
+
+    public static final Item GOLD_MINECART_ITEM = register("gold_minecart_item", GoldMinecartItem::new, new Item.Properties());
 
 }

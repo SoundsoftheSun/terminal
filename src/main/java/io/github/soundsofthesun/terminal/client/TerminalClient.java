@@ -2,6 +2,7 @@ package io.github.soundsofthesun.terminal.client;
 
 import io.github.soundsofthesun.terminal.block.TBlockEntities;
 import io.github.soundsofthesun.terminal.block.TBlocks;
+import io.github.soundsofthesun.terminal.entity.TEntities;
 import io.github.soundsofthesun.terminal.item.TItems;
 import io.github.soundsofthesun.terminal.network.TClientPayloads;
 import io.github.soundsofthesun.terminal.network.TPayloads;
@@ -17,5 +18,6 @@ public class TerminalClient implements ClientModInitializer {
         TItems.initializeClient();
         TBlockEntities.initializeClient();
         TClientPayloads.initialize();
+        TEntities.initializeClient();
     }
 }

@@ -3,6 +3,7 @@ package io.github.soundsofthesun.terminal;
 import io.github.soundsofthesun.terminal.attachment.TAttachmentTypes;
 import io.github.soundsofthesun.terminal.block.TBlockEntities;
 import io.github.soundsofthesun.terminal.block.TBlocks;
+import io.github.soundsofthesun.terminal.entity.TEntities;
 import io.github.soundsofthesun.terminal.item.TItems;
 import io.github.soundsofthesun.terminal.network.TPayloads;
 import io.github.soundsofthesun.terminal.particle.TParticles;
@@ -50,5 +51,6 @@ public class Terminal implements ModInitializer {
         TPayloads.initialize();
         TParticles.initialize();
         TVillagers.initialize();
+        TEntities.initialize();
     }
 }

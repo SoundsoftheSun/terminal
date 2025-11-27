@@ -24,6 +24,9 @@
       "io.github.soundsofthesun.terminal.Terminal"
     ]
   },
+  "mixins": [
+    "terminal.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
